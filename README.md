@@ -1,4 +1,4 @@
 npad
 ====
 
-The Network Path and Diagnostic tool source
+The Network Path and Application Diagnosis project
