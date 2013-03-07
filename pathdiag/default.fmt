@@ -1,0 +1,1004 @@
+################################################################
+# This section is nearly pure .html
+# it logically belongs in a different file, keyed on output type
+# e.g. html vs text
+
+fmt beginpage
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><link rel="stylesheet" href="boxes.css" type="text/css" />
+<title>Test Results</title></head><body>
+
+################
+fmt openbox
+<div class="[type]box">
+
+################
+fmt closebox
+</div>
+
+################
+fmt title
+<div class="sect">
+[message]
+</div>
+
+################
+fmt section
+<div class="sect">
+[message]
+</div>
+
+################ misc info
+fmt info
+<div class="info">
+[message]
+</div>
+
+################
+fmt pass
+<div class="pass">
+[message]
+</div>
+
+################
+fmt warning
+<div class="warn">
+[message]
+</div>
+
+################
+fmt fail
+<div class="fail">
+[message]
+</div>
+
+################
+fmt action
+<div class="action">
+&gt;&nbsp;
+[message]
+</div>
+
+################
+fmt endpage
+</body>
+</html>
+
+################################ All of the help support formats
+fmt BeginHelpPage
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Detailed information on messages.</Title>
+</head>
+<body>
+<h1>Detailed information on messages</h1>
+<!-- $ Id: $ -->
+
+# a useful fragment: <a href="[pathdiag]#intro">
+# </a>
+
+################
+fmt HelpTitle
+<hr>
+<h2><a name="[name]"/>
+[message]
+</h2>
+
+################
+fmt HelpText
+[message]
+
+################
+fmt helpfmt
+<a href="help.html#[name]">[?]</a>
+
+#<a href="help.html#[name]" target="help">[?]</a>
+
+################
+fmt EndHelpPage
+</body>
+</html>
+
+################################################################
+# this section is (nearly) pure text
+
+# ----------------
+tag docTitle
+[help]
+
+helptag docTitle
+This document provides additional explanation for some of the messages in pathdiag reports.
+See the general documentation for a glossary and overview of the measurement technique.
+<p>Jump to the
+ <a href="summary.html">[Result Summary]</a>
+ <a href="[pathdiag]">[General documentation]</a>
+ <a href="../">[Server Form]</a>
+
+################################ Test information
+tag testTitle
+Test conditions
+
+# ----------------
+tag testTester hostname address
+Tester: [hostname] ([address]) [help]
+
+helptag testTester
+The tester is the computer system that is sending the data and measuring
+the network path.  The tester analyzes the target and the path from the 
+tester to the target.
+
+# ----------------
+tag testTarget hostname address
+Target: [hostname] ([address]) [help]
+
+helptag testTarget
+The target is the system under test.  It is receiving data from the tester
+discarding it as fast as possible.   The target and path are analyzed by
+the tester.
+
+# ----------------
+tag testLogbase filename
+Logfile base name: [filename] [help]
+
+helptag testLogbase
+This is the base file name used to generate all of the intermediate files,
+reports and to archive the results.   If you have a question about a
+specific test, please include the full URL of the diagnostic report your question,
+so we can see exactly what you are looking at.
+
+# ----------------
+tag testWhen timestamp
+When: [timestamp]
+
+# helptag testWhen
+# (future) time stamp on the report, which may be different than the time
+# stamp in the logfile base name, if the data was reprocessed later.
+
+# ----------------
+tag testMSS mss
+Observed Maximum Segment Size for this path section: [mss] bytes [help]
+
+helptag testMSS
+The maximum size of the TCP payload for this <a href="[pathdiag]#section">path section</a>.
+This is generally the MTU of the path section minus the fixed part of the
+TCP/IP headers (40 byes), since the space for the options are
+accounted as part of the data size.
+
+# ----------------
+tag testTargetRate rate
+This report is based on a [rate] Mb/s target application data rate [help]
+
+helptag testTargetRate
+The measurements of this <a href="[pathdiag]#section">path section</a> are
+evaluated to see if it can support an application over a full end-to-end path
+at this <a href="[pathdiag]#target_rate">target data rate</a> with this
+target end-to-end Round Trip Time (RTT).
+This must be a realistic goal for the actual application, and must include
+considerations for link overhead and other traffic on the link.
+
+# ----------------
+tag testTargetRTT rtt
+This report is based on a [rtt] ms Round-Trip-Time (RTT) to the target application [help]
+
+helptag testTargetRTT
+The <a href="[pathdiag]#target_rtt">target Round Trip Time (RTT)</a> for the application.
+The measurements of this <a href="[pathdiag]#section">path section</a> are
+extrapolated to the <a href="[pathdiag]#target_rtt">target Round Trip Time (RTT)</a>
+to see if this section can support the application over the full end-to-end path at its
+target data rate.
+
+# ----------------
+tag testTargetMSS mss
+User specified Maximum Segment Size: [mss] bytes [help]
+
+helptag testTargetMSS
+The (future) target MSS as specified by the user.  This is useful if the
+end-to-end path has a smaller MSS (MTU) than the local section
+of the path.
+
+# ----------------
+tag testReRate rate
+Original target application data rate was: [rate] Mb/s [help]
+
+helptag testReRate
+The original target data rate as specified by the user. 
+It was overridden for this report.
+
+# ----------------
+tag testReRTT rtt
+Original target RTT was: [rtt] ms. [help]
+
+helptag testReRTT
+The original target RTT as specified by the user. 
+It was overridden (due to longer section RTT?) for this report.
+
+# ----------------
+tag testPath mss rtt
+The Round Trip Time for this path section is [rtt] ms.<br>
+The Maximum Segment Size for this path section is [mss] Bytes. [help]
+
+helptag testPath
+This <a href="[pathdiag]#section">path section</a> has the indicated minimum RTT and MSS,
+as reported by TCP itself.
+
+# ----------------
+tag testRTTwarn segrtt rtt
+Warning: The section RTT is greater than the requested target RTT ([segrtt] &gt; [rtt]) [help]
+
+helptag testRTTwarn
+The <a href="[pathdiag]#section">path section</a> under test has a larger RTT than the RTT for the target end-to-end path.
+Since this would causes very confusing results, the target RTT has been adjusted to be larger than the section RTT.
+
+# ----------------
+tag testPlotHere filename
+<img alt="[Data_Rate_gnuplot]" src="./[filename]rate.png">
+<img alt="[RTT_gnuplot]" src="./[filename]rtt.png">
+<img alt="[Loss_Rate_gnuplot]" src="./[filename]loss.png">
+<img alt="[power_gnuplot]" src="./[filename]pow.png">
+<br><a href="./[filename].plt">[tabular&nbsp;data]</a>
+
+################################ Peer TCP configuration
+tag peerTitle status
+Target host TCP configuration test: [status]! [help]
+
+helptag peerTitle
+This group of tests inspects the TCP option negotiations to determine if all
+of the features that are required for high performance operation were
+properly enabled.  Some other peer problems, such as insufficient buffer space 
+might be reported here as well.
+
+# ----------------
+tag peerNoSACK
+Warning: TCP connection is not using SACK. [help]
+
+helptag peerNoSACK
+The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+did not enable TCP Selective Acknowledgments, which would permit
+the receiver to indicate to the sender exactly which data is missing and needs
+to be retransmitted.    Without SACK the sender has to estimate which data is
+missing.  Under some conditions this can waste half of the available performance.
+SACK is specified in RFC2018.
+
+# ----------------
+tag peerNoTS
+Warning: TCP connection is not using RFC1323 timestamps. [help]
+
+helptag peerNoTS
+The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+failed to negotiate RFC1323 timestamps.  This will not
+slow the TCP connection at all, but without timestamps there is a risk
+of silent data corruption if segments (packets) are delivered out of
+order by more the 4 Gigabytes.  This is not generally a problem below
+100&nbsp;Mb/s because the segments would have to be delayed more than their
+legal lifetime in the network.  However 4&nbsp;Gigabytes (actually
+2^32) only takes 35 seconds at 1&nbsp;Gigabit/second or 3.5&nbsp;seconds
+at 10&nbsp;Gigabit/second, both of which are within the worst case delays for the
+Internet.
+
+# ----------------
+tag peerNoWS need
+Critical Failure: Did not negotiate window scale, it should be [wscale]. [help]
+
+helptag peerNoWS
+The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+did not negotiate window scale, which is require for the target data
+rate and RTT.   This configuration problem is an absolute show stopper for
+the target data rate and RTT, and should be the first problem fixed.
+<p>The method to enable window scale is not standardized, and varies from system to system.
+See the <a href="#peerFix">TCP tuning instructions</a> for more advice.
+
+# ----------------
+tag peerSmallWS wscale need
+Critical Failure: Received window scale is [wsrcvd], it should be [wscale]. [help]
+
+helptag peerSmallWS
+The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+negotiated Window scale, but it is not large enough for the target data
+rate and RTT.   This configuration problem is an absolute show stopper for
+the target data rate and RTT, and should be the first problem fixed.
+<p>The method used to pick window scale is not standardized, and varies from system to system.
+Often the window scale is selected on the basis of either the current or maximum TCP buffer size.
+See the <a href="#peerFix">TCP tuning instructions</a> for more advice.
+
+# ----------------
+tag peerPassSYN
+TCP negotiated appropriate options: WSCALE=[wscale], SACKok, and Timestamps.  [help]
+
+helptag peerPassSYN
+The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+passed all tests on the SYN and SYN-ACK exchange which negotiates
+the TCP options for the connections.   Timestamps and SACK are both on and the
+receiver window scale is large enough to support the application.
+
+# The next group of peer problems are detected after the SYN exchange, typically
+# due to insufficient buffer space or CPU limits.
+
+# ----------------
+tag peerMaxRwin val
+The maximum receiver window ([val]k) is too small for this application (and/or some tests). [help]
+
+helptag peerMaxRwin
+The maximum <a href="[pathdiag]#rwnd">receiver window</a>,
+which is generally determined by the TCP <a href="[pathdiag]#buffer_size">buffer size</a>, is smaller
+than required to meet the target data rate and RTT.   It also prevented some of the tests from
+completing properly.
+
+# ----------------
+tag peerMaxRwinOK val
+The maximum receiver window ([val]k) is too small for some tests,
+but sufficient for the target application. [help]
+
+helptag peerMaxRwinOK
+The maximum <a href="[pathdiag]#rwnd">receiver window</a>,
+which is generally determined by the TCP <a href="[pathdiag]#buffer_size">buffer size</a>, is smaller
+than required for some tests (e.g. estimating the bottleneck queue size), but is large enough to support
+the target data rate and RTT.
+
+# ----------------
+tag peerCloseRwin
+The target (client) closed the receiver window. [help]
+
+helptag peerCloseRwin
+The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+is using TCP flow control to throttle the test traffic.
+This suggests that the receiver might not be fast enough, or might have too much
+other competing CPU load to sustain the target data rate.
+
+# ----------------
+tag peerTriageRwin
+The target (client) intermittently stalls the test traffic. [help]
+
+helptag peerTriageRwin
+The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+is intermittently slowing or pausing the test data.
+This may be due to a momentary CPU load on the receiver, or some
+undiagnosed bottleneck in the target.   Re-run the test, and if this error persists
+look for intermittent CPU load on the
+<a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>).
+
+# ----------------
+tag peerDiagnosis
+Diagnosis: The target (client) is not properly configured. [help]
+
+helptag peerDiagnosis
+Diagnosis: The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+is not properly configured for the specified target end-to-end path and application data rate.
+If you are using the NPAD/pathdiag <a href="[pathdiag]">diagnostic service</a>, the
+problem lies in the end-system which is running the browser to request this test.
+Failed tests are absolute show stoppers and must be corrected before it is possible
+to attain the <a href="[pathdiag]#target_rate">target data rate</a> at
+the <a href="[pathdiag]#target_rtt">target round trip time</a>.
+
+# ---------------- Action
+tag peerFix
+See TCP tuning instructions at
+<a href="http://www.psc.edu/networking/projects/tcptune/">http://www.psc.edu/networking/projects/tcptune/</a> [help]
+
+helptag peerFix
+Look at the general procedural recommendations on the main pathdiag page on how to approach 
+<a href="[pathdiag]#target_flaws">TCP tuning and other end-system flaws.</a>
+A a system administrator should follow the detailed (system specific) directions at
+<a href="http://www.psc.edu/networking/projects/tcptune/">http://www.psc.edu/networking/projects/tcptune/</a>.
+
+# ---------------- Action (NOT)
+tag peerWarn
+Warnings reflect problems that might not affect target end-to-end performance. [help]
+
+helptag peerWarn
+Flaws indicated by warnings might not affect end-to-end performance.
+Review all help ([?]) for more detailed information.
+You may be able to attain your target performance without correcting the warnings, however you
+should read the <a href="#peerPass">caveats</a> on passing tests.
+
+# ---------------- Action (NOT)
+tag peerPass
+The target passed all tests!  See tester caveats: [help]
+
+helptag peerPass
+The <a href="[pathdiag]#target">target</a> (<a href="[pathdiag]#Pathdiag_client">client</a>)
+passed all tests!
+<p>We believe that this diagnostic can detect all flaws in the test
+target with the following exceptions:<ul>
+<li>This version of pathdiag only tests data transmission from the tester to the test target.
+Flaws in the target that only affect data from the test target to the tester
+(such as TCP sender tuning) can only be indirectly detected.
+However, as long as the system TCP tuning is symmetrical, tuning problems that affect the
+target sending data will also cause corresponding receiving diagnostics to fail,
+and thus be detected indirectly.
+If the system TCP tuning is not symmetrical, then test target sender problems are not detected
+at all, and you need to manually confirm that your sending TCP buffer is large enough
+(or at least the same or larger than the receiver buffer).
+</li>
+<li>The TCP receiver buffer size (or maximum window) can only be verified up to the amount of data
+that can actually be held in the queues in this <a href="[pathdiag]#section">path section</a>.
+It is not incorrect for this maximum queue size to be smaller
+than the ideal TCP receiver buffer size (which is twice the pipe size.)
+Under some specific situation it is possible that there are additional undetected
+limits on TCP receiver window size.</li>
+</ul>
+On the main pathdiag page there are
+<a href="[pathdiag]#no_flaws">general procedural recommendations</a> for what to do next
+when both the target and path pass all diagnostics.
+
+################################ Data rate checks
+tag rateTitle status
+Data rate test: [status]! [help]
+
+helptag rateTitle
+This group of tests measures the maximum data rate of this <a href="[pathdiag]#section">path section</a>.
+If this rate is less than the target data rate, provide some indication of what might
+be the problem.
+
+# ----------------
+tag rateMeasured rate
+The maximum data rate was [rate] Mb/s. [help]
+
+helptag rateMeasured
+This is the maximum data rate that the tester was able to attain on this <a href="[pathdiag]#section">path section</a>.
+
+# ----------------
+tag rateTarget rate
+This is below the target rate ([rate] Mb/s). [help]
+
+helptag rateTarget
+The target data rate for the application, as specified by the user.
+
+# ----------------
+tag rateLoss
+Diagnosis: Excessive overall packet loss seems to have limited
+the data rate. [help]
+
+helptag rateLoss
+The data rate on this <a href="[pathdiag]#section">path section</a> seems to have been limited by a high data loss rate.
+The loss rate was so high that TCP was unable to reach full speed for the path section.
+
+# ----------------
+tag rateClamp
+Diagnosis: there seems to be a hard data rate limit. [help]
+
+helptag rateClamp
+Some device in the path seem to be reaching some hard data rate limit, 
+without exhibiting other
+symptoms of congestion such as elevated loss rate.
+
+# ----------------
+tag rateOverhead
+Check your expectations: did you deduct a reasonable overhead (10%)? [help]
+
+helptag rateOverhead
+The measured maximum data rate is within 10% of the target rate, suggesting that
+the target rate may have been specified using raw clock rate for the link, rather
+than application (TCP payload) data rate.   For example you can not reliably get
+more than 90 Mb/s through Fast Ethernet, even though Fast Ethernet is clocked at 100 Mb/s.
+
+# ----------------
+tag rateRoute
+Check the path: is it via the route and equipment that you expect? [help]
+
+helptag rateRoute
+When you encounter a hard data limit that is much smaller than you expect, you have
+to consider the possibility that you are not using the equipment that you expect.
+The path might be I1 instead of I2, or somebody might have "repaired" a switch by
+replacing it with an older model, and so forth.
+
+# ----------------
+tag ratePass rate
+Pass data rate check: maximum data rate was [rate] Mb/s [help]
+
+helptag ratePass
+The maximum data rate over this section of the path seems to be sufficient for
+the target application.  Due to the effects of symptom scaling, this is not sufficient to 
+guarantee that this section is not the bottleneck when part of a long path.
+
+################################ Loss rate checks
+tag lossTitle status
+Loss rate test: [status]! [help]
+
+helptag lossTitle
+This group of tests measures the background loss rate of this <a href="[pathdiag]#section">path section</a>.
+It does this by counting losses while sending a large quantity of data at the largest window
+(highest data rate) that does not create congestion.
+
+# ----------------
+tag lossInsufficient0 have need
+Insufficient data to to measure loss rate: Zero losses in [have]
+packets (need twice [need] packets or more to measure the target loss rate).
+[help]
+
+helptag lossInsufficient0
+There were zero losses, but the data set is too small to clam that the path section
+reached the loss rate needed to attain the data rate needed by the application.
+This typically happens if the data rate was too low to collect the required data in 
+reasonable amount of time.
+
+# ----------------
+tag lossInsufficient
+Loss rate measurement based on insufficient data and may be inaccurate. [help]
+
+helptag lossInsufficient
+There were fewer than 4 losses, so there is significant measurement uncertainty
+in the calculated loss rate.
+
+# ----------------
+tag lossInsufficientRate
+The data rate was not high enough to accumulate sufficient loss statistics in a reasonable amount of time. [help]
+
+helptag lossInsufficientRate
+The loss rate test was truncated without collecting sufficient data
+because it would have taken too long to collect sufficient statistics at the attained data rate.
+
+# ---------------- Action
+tag lossInsufficientRateFix
+Correct data rate problems and re-test the path. [help]
+
+helptag lossInsufficientRateFix
+After the data rate problems have been resolved, you should be able to re-run this test to get
+complete loss statistics.
+
+# ----------------
+tag lossFail percent runlen
+Fail: loss event rate: [percent]% ([runlen] packets between loss events). [help]
+
+helptag lossFail
+The loss rate on this <a href="[pathdiag]#section">path section</a> is too high to support the target data rate and RTT.
+Normal (required) TCP congestion control will prevent the application from reaching
+the target data rate, even though this path section can support the application with a
+short RTT.
+
+# ----------------
+tag lossDiagnosis
+Diagnosis: there is too much background (non-congested) packet loss. [help]
+
+helptag lossDiagnosis
+You need to find and correct the excessive background loss.   It could be caused by
+defective hardware, cables, connectors in any part of the path section.
+
+# ----------------
+tag lossDetails count percent
+The events averaged [count] losses each, for a total loss rate of [percent]%. [help]
+
+helptag lossDetails
+Most SACK TCP implementation only care about the number of round trips that contain losses and do not
+care about the number of losses within each round trip that has has losses.   This is because
+repairing the second and later loss in one round trip only adds a small additional overhead (when SACK is in use).
+Other protocols and tools (such as UDP testers) do not care about round trips, and only report
+the total loss rate.   This message provides the raw statistics to facilitate debugging the
+background loss rate with a non-TCP tool.
+
+# XXX future add explicit SACK check
+
+# ---------------- Action
+tag lossAction
+Locate the excess packet loss in this section of the path. [help]
+
+helptag lossAction
+First, check cables and other easily replaced hardware by doing so.  If you do
+not have access to network cabling and detailed network maps, defer locating excess
+packet loss to somebody who does.
+
+# ----------------
+tag lossPass percent runlen
+Pass: measured loss rate [percent]% ([runlen] packets between loss events). [help]
+
+helptag lossPass
+The measured background loss rate is not high enough to prevent TCP from reaching the target data rate at
+the target RTT.
+
+# ----------------
+tag lossPass0 percent runlen
+Pass: zero losses in [runlen] packets, loss rate less than [percent]%. [help]
+
+helptag lossPass0
+There were no background (non-congested) packet losses.
+
+# ----------------
+tag lossBudget rate mss rtt percent runlen
+FYI: To get [rate] Mb/s with a [mss] byte MSS on a [rtt] ms path the total
+end-to-end loss budget is [percent]% ([runlen] packets between losses). [help]
+
+helptag lossBudget
+The total amount of loss that can be tolerated (the loss budget) can be estimated from the
+target data rate, target RTT and Maximum segment size from the model in 
+<a href="[pathdiag]#msmo97">[MSMO97]</a>.  The sum of the loss rates for each <a href="[pathdiag]#section">path section</a> must be less than loss budget
+to meet the target data rate and target RTT.
+
+################################ Duplex
+tag duplexTitle
+Ethernet duplex miss-match test: [status]! [help]
+
+helptag duplexTitle
+Running an optional Ethernet duplex miss-match test.  Some Ethernet (10 and 100 Mb/s only) can use 
+either half duplex (a shared channel with only one sender at a time) or full duplex 
+(a point to point link with two completely independent one way channels).
+Sometimes Ethernet devices fail to select the same mode
+(due to improper manual configuration or failed auto negotiation), leading to very poor performance.
+
+# ----------------
+tag duplexCheck
+Pass extra check for Ethernet duplex mismatch. [help]
+
+helptag duplexCheck
+No Ethernet duplex problems were detected.
+
+# ----------------
+tag duplexDiagnosis
+Suspect Ethernet full/half duplex mismatch. [help]
+
+helptag duplexDiagnosis
+There seems to be an Ethernet duplex miss-match some place in the path!
+This is a critical problem that cause poor performance and
+obscures all other test results.
+
+# ---------------- Action
+tag duplexFix
+Check Network Interface Card (NIC) and Ethernet switch configurations. [help]
+
+helptag duplexFix
+You network administrator needs to check the duplex options on your network
+interface card and the Ethernet switch(s) in the path.
+
+################################ Static queue size
+tag staticTitle status
+Network buffering test: [status]! [help]
+
+helptag staticTitle
+This group of tests attempts to measures the queue space at the bottleneck in this path section.
+It will be unsuccessful if there is too much data loss in the path or other bottlenecks in either
+the tester or the target.   It performs the test by creating a standing queue at the path bottleneck,
+and detecting the onset of loss as that queue gets larger.
+
+# not used
+tag staticConditions
+Warning: could not measure queue length due to previously reported bottlenecks [help]
+
+# not used
+helptag staticConditions
+Other, previously reported problems prevented the tester from being able to create a
+standing queue at the bottleneck.
+
+# not used
+tag staticInsufficient
+Please report a possible tester problem measuring queue length(*) [help]
+
+# not used
+helptag staticInsufficient
+The tester was unable to detect the onset of loss, probably because the maximum queue size was
+not large enough to overflow the queue.
+
+# ----------------
+tag staticMeasured packets bytes
+Measured queue size, Pkts: [packets] Bytes: [bytes] [help]
+
+helptag staticMeasured
+The bottleneck queue size is measured as the difference between the onset of queue delay (queue formation)
+and the onset of loss (queue overflow).
+
+# ----------------
+tag staticEstimated packets bytes
+Estimated queue size is at least: Pkts: [packets] Bytes: [bytes] <br>
+This is probably an underestimate of the actual queue size. [help]
+
+helptag staticEstimated
+The queue size is supposed to be measured by the difference between the onset of queue delay (queue formation)
+and the onset of loss (queue overflow).   However in this case the queue size was limited by something other than loss
+so the measured queue size might be smaller than the actual queue size.
+
+# ----------------
+tag staticQueueTime time
+This corresponds to a [time] ms drain time. [help]
+
+helptag staticQueueTime
+The drain time is the time it would take for a full queue to drain at the measured
+bottleneck data rate.
+
+# ----------------
+tag staticNegative
+Losses start at a smaller window than the onset of queuing. [help]
+
+helptag staticNegative
+Losses are load sensitive, but start before TCP starts to cause a
+queue in the network.
+This may indicate the presence of traffic policing or other
+load sensitive loss mechanisms that does not include queuing.
+
+# ----------------
+tag staticTooFast
+Can not measure the bottleneck queue. [help]
+
+helptag staticTooFast
+The tester and/or the target could not send data fast enough to cause network congestion,
+yet no bottlenecks were identified.   This can be cause by three different things:<ul>
+<li>The network really is faster than the end systems
+such that the end-systems are the true bottleneck.
+Read the <a href="#peerPass">caveats</a> on passing tests.</li>
+<li>There is some completely unknown TCP bottleneck, such as an outright bug in TCP itself.
+These cases can be investigated via stronger techniques, such as
+inspecting <a href="[pathdiag]#traces">TCP traces</a>.</li>
+<li>The test did not run long enough, or was some how truncated,
+such that it did not run long enough to cause congestion.</li>
+</ul>
+
+# ----------------
+tag staticDiagnosis
+Tentative Diagnosis: Insufficient buffering (queue space) in routers or switches.
+(but note that this test may be overly conservative.) [help]
+
+helptag staticDiagnosis
+Classical TCP theory [Villamizer], Requires a full delay bandwidth product of
+buffering at every possible bottleneck.   Newer results require much smaller buffers
+for aggregate traffic.   At this time it is unclear to what extent these conflicting
+results apply to any given application.  If your application performance is unacceptable
+and this is the only non-pass result please let us know about it.
+
+# ----------------
+tag staticPass
+Pass: The network bottleneck has sufficient buffering (queue space) in routers and switches. [help]
+
+helptag staticPass
+Classical TCP theory [Villamizer], Requires a full delay bandwidth product of
+buffering at every possible bottleneck.   Newer results require much smaller buffers
+for aggregate traffic.   At this time it is unclear to what extent these conflicting
+results apply to any given application.  If your application performance is unacceptable
+and this is the only non-pass result please let us know about it.
+
+# ----------------
+tag staticInfo rate rtt bytes
+To get [rate] Mb/s with on a [rtt] ms path, you need [bytes] bytes of buffer space. [help]
+
+helptag staticInfo
+This is the required queue size, calculated using classical TCP theory [Villamizer].
+
+# ---------------- Action
+tag staticFix maxjitter
+Reconfigure routers/switches to increase the queue space or limit jitter from
+all sources (application, ACK compression etc), to less than [maxjitter] ms. [help]
+
+helptag staticFix
+Short queues can only work if the worst case jitter (burst size) in
+the data stream is small enough
+to fit within the queue at the bottleneck.  There are several mechanisms that naturally
+smooth the data (reducing jitter) and others that introduce more jitter.
+
+################################ Path summary
+tag pathTitle
+Path measurements [help]
+
+helptag pathTitle
+The following groups of tests each measure some aspect of the <a href="[pathdiag]#section">path section</a> from the
+tester to the target.
+
+# ----------------
+tag pathLength
+The path to the tester is too long for accurate measurements.
+
+# ----------------
+tag pathChoose
+Test a shorter path section or reduce the target data rate and/or RTT. [help]
+
+helptag pathChoose
+These diagnostics require that TCP be responsive to changes in test parameters
+within the allotted sample intervals.   This is not possible it the target data
+rate is too high or if the <a href="[pathdiag]#section">path section</a> under
+test is too long (i.e. If the round trip time to the tester is too large).
+<p>
+Since the measurements in this run are done under less than ideal conditions,
+failed test results for the path and tester may be exaggerated.
+(But all End-System test and passing test results are accurate).
+<p>
+Either reduce the target rate and/or RTT, or choose a closer 
+<a href="[pathdiag]#servers">diagnostic server</a>.
+
+# ---------------- Action
+tag pathFix
+Localize all path problems by testing progressively smaller sections of the full path. [help]
+
+helptag pathFix
+This path section has one or more problems as indicated by other messages
+in this report.
+Look at the general procedural recommendations on how to approach 
+<a href="[pathdiag]#path_flaws">path flaws.</a>
+
+# ---------------- Action (not)
+tag pathPass
+The network path passed all tests! [help]
+
+helptag pathPass
+Congratulations!  The path tests clean!
+<p>We believe that this diagnostic can detect all flaws in the path
+with the following exceptions:<ul>
+<li>This version of pathdiag only tests data transmission from the tester to the test target.
+This is the most important direction for typical end users, who are most likely to be
+receiving data from well tested data centers onto their personal workstations.
+Flaws in the path that only affect data flowing away from the test target
+can not be easily be diagnosed with this web-based pathdiag client.
+In the future we will implement bi-directional testing.</li>
+<li>
+There are conflicting theoretical results on the amount of buffer space required in network bottlenecks.
+As we gain more field experience with the buffer measurement results, some of the current warnings will
+be replaced by more specific messages.</li>
+</ul>
+On the main pathdiag page there are
+<a href="[pathdiag]#no_flaws">general procedural recommendations</a> for what to do next
+when both the target and path pass all diagnostics.
+
+# ---------------- Action (not)
+tag pathAborted
+The data connection was terminated before collecting sufficient data to measure
+the path.
+
+# ---------------- Action (not)
+tag pathWindow rate ttl
+The requested test parameters ([rate] mb/s and [rtt] ms) require a larger window than
+is supported by this server.
+
+tag pathReduce size
+Rerun the test such that the target delay bandwidth product fits within [size] Bytes.  [help]
+
+helptag pathReduce
+The target delay bandwidth product (the target data rate times the target rtt)
+must be smaller than the indicated size, due to resource limits at the server.
+Rerun the test with smaller parameters.
+
+################################ Alternate path tests
+tag altTitle
+Suggestions for alternate tests
+
+
+# ----------------
+tag altStronger
+FYI: This path may even pass with a more strenuous application: [help]
+
+helptag altStronger
+This path section is better than required to support the target data rate and RTT.
+It might also pass a more strenuous test.
+
+# ----------------
+tag altWeaker
+FYI: This path may pass with a less strenuous application: [help]
+
+helptag altWeaker
+This path section is worse than required to support the target data rate and RTT.
+But it might pass a less strenuous test.
+
+# ----------------
+tag altRaiseMSS
+Or if you can raise the MTU: [help]
+
+helptag altRaiseMSS
+Raising the Maximum Transmission Unit (packet size) makes it much easier to attain high
+performance.
+
+# ----------------
+tag altTest rate rtt
+&nbsp;&nbsp;&nbsp;&nbsp;Try rate=[rate] Mb/s, rtt=[rtt] ms
+
+# ----------------
+tag altMSSTest rate rtt mss
+&nbsp;&nbsp;&nbsp;&nbsp;Try rate=[rate] Mb/s, rtt=[rtt] ms, mtu=[mss] bytes
+
+################################ Check the tester itself
+tag testerTitle status
+Tester validation: [status]! [help]
+
+helptag testerTitle
+This tester has several built in consistency checks designed to detect if the tester
+itself is a bottleneck or otherwise fails to properly diagnose a network path.
+
+# ----------------
+tag testerBottleneck
+The tester has a bottleneck. [help]
+
+helptag testerBottleneck
+It appears that the tester has some limit (a bottleneck) such that it
+can not drive the path into hard congestion.   This bottleneck might be
+insufficient sender buffer space, not fast enough CPU or other load on the sender.
+In the latter case you may get better results by re-running the test at a later time.
+
+# ----------------
+tag testerBottleneckNIC
+The tester NIC is not fast enough to be able to drive the network into congestion. [help]
+
+helptag testerBottleneckNIC
+The tester was unable to fill the link because the Network Interface Card stalled data transmission.
+This suggests that the tester NIC is the true bottleneck, either due to its limitations or because
+there was other traffic through the NIC.
+
+# ----------------
+tag testerInsufficientUnknown
+Insufficient data due to unknown tester limitation. [help]
+
+helptag testerInsufficientUnknown
+For some unknown reason the tester did not collect sufficient data for this test.
+
+# ----------------
+tag testerMBZ varname value
+The web100 kernel instrument, [varname], unexpectedly reported a non-zero value ([value]). [help]
+
+helptag testerMBZ
+A web100 internal kernel instrument that is normally zero, reported some events that are
+not diagnosed by the current tester.   This is normally a rare situation.
+
+# ----------------
+tag testerFractionalWindow obswin mss
+The actual TCP window ([obswin]), is not an integral multiple of the MSS ([mss]). [help]
+
+helptag testerFractionalWindow
+For some reason one or more undersized segments were transmitted.
+This breaks some of the underlying assumptions in the analysis code, and may indicate that the tester
+is not properly controlling the TCP window.
+
+# ----------------
+tag testerBurstFailed
+Future burst test failed to properly generate bursts
+
+# ----------------
+tag testerInconsistent reason message
+The tester internal logic yields inconsistent test results ([reason]) (*)! 
+[message]
+[help]
+# bug in prettyhtml: it incorrectly requires [help] on the last line
+
+helptag testerInconsistent
+The tester internal logic is performing the same check in two different ways, and for some reason
+the two methods do not yield the same results.   This probably indicates a flaw in the test logic.
+
+# ---------------- Action
+tag testerUnknownFix filename
+Please see the instructions on <a href="[pathdiag]#tester_flaws">tester flaws</a>.
+
+#Please report this problem with the tester to
+#<a href="mailto:nettune@psc.edu?subject=[filename]">nettune@psc.edu</a>. [help]
+
+# helptag testerUnknownFix
+# This tester is still under active development, and this may have been the first time
+# that it encountered the particular combination of events that happened in this test.
+# Please help us improve the tester coverage by sending us the URL to this test report to nettune@psc.edu.
+
+# ----------------
+tag testerUndiagnosed
+(*) Some events in this run were not completely diagnosed. [help]
+
+helptag testerUndiagnosed
+This test detected some events that were not properly diagnosed in this version of the tester.
+As we refine the tester we expect to eliminate all of these cases.
+
+# ----------------
+tag testerPass
+No internal tester problems were detected.
+
+# ----------------
+tag testerVersion version phase
+<small>[phase] version: [version]</small>
+
+# ---------------- Action
+tag testerWeb100zeroRwin
+Web100 kernel failed to report receive window size.
+<div class="action">&gt;&nbsp;Update the kernel to a newer version of Web100</div>
+# This should be a separate action to the operator
+
+
+################################ misc formats
+tag GenericFail message
+Fail: [message]
+
+# ----------------
+tag GenericIncomplete
+This test did not complete due to other problems with the path, target or tester.
+
+# no helptag GenericIncomplete: see GenericFix
+
+# ---------------- Action
+tag GenericFix
+Correct other problems first, and then rerun this test. [help]
+
+helptag GenericFix
+There are other problems which prevented this test from attaining
+a conclusive measurement.    Correct all other failed tests and then rerun this test
+to get additional results.
+
+# ----------------
+tag GenericProvisional
+The following incomplete results may be useful (or may be incorrect):
+
+################################ The End

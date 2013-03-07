@@ -1,0 +1,298 @@
+################################################################
+# This section is nearly pure .html
+# it logically belongs in a different file, keyed on output type
+# e.g. html vs text
+
+fmt beginpage
+<tr><td>
+
+################
+fmt openbox
+<!-- openbox -->
+
+################
+fmt closebox
+<!-- closebox -->
+
+################
+fmt title
+<!-- title -->
+[message]
+
+################
+fmt section
+<!-- section -->
+[message]
+
+################ misc info
+fmt info
+<!-- info -->
+[message]
+
+################
+fmt pass
+<span><font color="#00AA00">
+[message]
+</font></span>
+
+################
+fmt warning
+<span><font color="#FFC000">
+[message]
+</font></span>
+
+################
+fmt fail
+<span><font color="#FF0000">
+[message]
+</font></span>
+
+################
+fmt action
+<!-- action -->
+
+################
+fmt endpage
+</td></tr>
+
+################################################################
+# this section is (nearly) pure text
+tag docTitle
+
+################################ Test information
+tag testTitle
+
+tag testTester hostname address
+
+tag testTarget hostname address
+
+tag testLogbase filename
+<a href="./[filename].html">
+
+tag testWhen timestamp
+
+tag testMSS mss
+
+tag testTargetRate rate
+Target: [rate] Mb/s
+
+tag testTargetRTT rtt
+* [rtt] ms
+
+tag testTargetMSS mss
+
+tag testReRate rate
+
+tag testReRTT rtt
+
+tag testPath mss rtt
+
+tag testRTTwarn segrtt rtt
+
+tag testPlotHere filename
+
+################################ Peer TCP configuration
+tag peerTitle status
+</a>
+</td><td>
+
+tag peerNoSACK
+No SACK
+
+tag peerNoTS
+No TS
+
+tag peerNoWS need
+No WSCALE
+
+tag peerSmallWS wscale need
+WS: [wsrcvd]/[wscale]
+
+tag peerPassSYN
+WS:[wscale]
+
+# Rwin checks
+tag peerMaxRwin val
+MaxRwin [val]k
+
+tag peerMaxRwinOK val
+MaxRwin [val]k (OK)
+
+tag peerCloseRwin
+Bottleneck
+
+tag peerTriageRwin
+Bottleneck
+
+tag peerDiagnosis
+
+tag peerFix
+
+tag peerWarn
+
+tag peerPass
+Pass
+
+################################ Data rate checks
+tag rateTitle status
+
+tag rateMeasured rate
+Fail: [rate] Mb/s.
+
+tag rateTarget rate
+
+tag rateLoss
+
+tag rateClamp
+
+tag rateOverhead
+
+tag rateRoute
+
+tag ratePass rate
+Pass: [rate] Mb/s
+
+################################ Loss rate checks
+tag lossTitle status
+
+tag lossInsufficient0 have need
+
+tag lossInsufficient
+
+tag lossInsufficientRate
+
+tag lossInsufficientRateFix
+
+tag lossFail percent runlen
+Fail: [percent]% [runlen]
+
+tag lossDiagnosis
+
+tag lossDetails count percent
+
+tag lossAction
+
+tag lossPass percent runlen
+Pass: [percent]% [runlen]
+
+tag lossPass0 percent runlen
+Pass: 0% [runlen]
+
+tag lossBudget rate mss rtt percent runlen
+
+################################
+tag duplexTitle
+
+tag duplexCheck
+Pass: duplex
+
+tag duplexDiagnosis
+Fail: duplex
+
+tag duplexFix
+
+################################ Static queue size
+tag staticTitle status
+
+tag staticConditions
+
+tag staticInsufficient
+
+tag staticMeasured packets bytes
+Pkts: [packets]
+
+tag staticEstimated packets bytes
+Est pkts: [packets]
+
+tag staticQueueTime time
+
+tag staticNegative
+
+tag staticTooFast
+No queue
+
+tag staticDiagnosis
+
+tag staticPass
+
+tag staticInfo rate rtt bytes
+
+tag staticFix maxjitter
+
+################################ Path summary
+tag pathTitle
+</td><td>
+
+tag pathLength
+Path too long:
+
+tag pathChoose
+
+tag pathFix
+
+tag pathPass
+
+tag pathAborted
+NA (test aborted)
+
+tag pathWindow rate ttl
+NA (too long)
+
+tag pathReduce size
+
+################################ Alternate path tests
+tag altTitle
+
+tag altStronger
+
+tag altWeaker
+
+tag altRaiseMSS
+
+tag altTest rate rtt
+
+tag altMSSTest rate rtt mss
+
+################################ Check the tester itself
+tag testerTitle status
+</td><td>
+
+tag testerBottleneck
+Bottleneck
+
+tag testerBottleneckNIC
+NIC
+
+tag testerInsufficientUnknown
+
+tag testerMBZ varname value
+MBZ
+
+tag testerFractionalWindow obswin mss
+
+tag testerBurstFailed
+
+tag testerInconsistent reason message
+Inconsistent
+
+tag testerUnknownFix filename
+
+tag testerUndiagnosed
+Undiagnosed
+
+tag testerPass
+Pass
+
+tag testerVersion version phase
+
+tag testerWeb100zeroRwin
+Web100
+
+################################ misc formats
+tag GenericFail message
+
+tag GenericIncomplete
+
+tag GenericFix
+
+tag GenericProvisional

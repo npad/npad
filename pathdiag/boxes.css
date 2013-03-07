@@ -1,0 +1,29 @@
+
+ body    {font-size:12pt; }
+ .sect   {font-size:15pt; margin-bottom: 5pt}
+ .infobox    {	padding: 1px 1px 1px 1px;
+		margin: 05px 0 05px 15px;
+		color: #000000;
+ 		border: 2px solid #000000; }
+ .info	     { }
+ .passbox    {	padding: 1px 1px 1px 1px;
+		margin: 05px 0 05px 15px;
+		color: #00AA00;
+ 		border: 2px solid #00FF00; }
+ .pass   {color: #00AA00; }
+ .warningbox    {	padding: 1px 1px 1px 1px;
+		margin: 05px 0 05px 15px;
+		color: #FFC000;
+ 		border: 2px solid #FFC000; }
+ .warn   {color: #FFC000; }
+ .failbox    {	padding: 1px 1px 1px 1px;
+		margin: 05px 0 05px 15px;
+		color: #FF0000;
+ 		border: 2px solid #FF0000; }
+ .fail   {color: #FF0000; }
+ .fyi    {color: #C0C0C0; }
+ .hint   {color: #0000FF; }
+ .action {font-weight:bold; font-style:italic }
+ .box    {	padding: 1px 16px 1px 16px;
+		margin: 05px 0 05px 5px;
+ 		border: 1px solid}

@@ -1,0 +1,301 @@
+fmt beginpage
+bp
+
+fmt openbox
+ob
+
+fmt closebox
+cb
+
+fmt endpage
+ep
+
+fmt DefFormat
+[message]
+
+tag docTitle
+docT
+
+tag testTitle
+testT
+
+tag testTester hostname address
+tr
+
+tag testTarget hostname address
+tg
+
+tag testLogbase filename
+tl
+
+tag testWhen timestamp
+tw
+
+tag testMSS mss
+tm
+
+tag testTargetRate rate
+tta
+
+tag testTargetRTT rtt
+ttt
+
+tag testTargetMSS mss
+tts
+
+tag testReRate rate
+tra
+
+tag testReRTT rtt
+trt
+
+tag testPath mss rtt
+tp
+
+tag testRTTwarn segrtt rtt
+tw
+
+tag testPlotHere filename
+
+tag peerTitle status
+peerT
+
+tag peerNoSACK
+pns
+
+tag peerNoTS
+pnt
+
+tag peerNoWS need
+pnw
+
+tag peerSmallWS wscale need
+psw
+
+tag peerPassSYN
+pps
+
+tag peerMaxRwin val
+pmr
+
+tag peerMaxRwinOK val
+pmro
+
+tag peerCloseRwin
+pcw
+
+tag peerTriageRwin
+ptr
+
+tag peerDiagnosis
+pd
+
+tag peerFix
+pf
+
+tag peerWarn
+pw
+
+tag peerPass
+pp
+
+tag rateTitle status
+rateT
+
+tag rateMeasured rate
+rm
+
+tag rateTarget rate
+rt
+
+tag rateLoss
+rl
+
+tag rateClamp
+rc
+
+tag rateOverhead
+ro
+
+tag rateRoute
+rr
+
+tag ratePass rate
+rp
+
+tag lossTitle status
+lossT
+
+tag lossInsufficient0 have need
+li0
+
+tag lossInsufficient
+li
+
+tag lossInsufficientRate
+lir
+
+tag lossInsufficientRateFix
+lif
+
+tag lossFail percent runlen
+lf
+
+tag lossDiagnosis
+ld
+
+tag lossDetails count percent
+lc
+
+tag lossAction
+la
+
+tag lossPass percent runlen
+lp
+
+tag lossPass0 percent runlen
+lp0
+
+tag lossBudget rate mss rtt percent runlen
+lb
+
+tag duplexTitle
+dupT
+
+tag duplexCheck
+dc
+
+tag duplexDiagnosis
+dd
+
+tag duplexFix
+df
+
+tag staticTitle status
+statT
+
+tag staticConditions
+sc
+
+tag staticInsufficient
+si
+
+tag staticMeasured packets bytes
+sm
+
+tag staticEstimated packets bytes
+se
+
+tag staticQueueTime time
+sq
+
+tag staticNegative
+sn
+
+tag staticTooFast
+stf
+
+tag staticDiagnosis
+sd
+
+tag staticPass
+sp
+
+tag staticInfo rate rtt bytes
+si
+
+tag staticFix maxjitter
+sf
+
+tag pathTitle
+pathT
+
+tag pathLength
+pl
+
+tag pathChoose
+pc
+
+tag pathFix
+pf
+
+tag pathPass
+pp
+
+tag pathAborted
+pa
+
+tag pathWindow rate ttl
+pw
+
+tag pathReduce size
+pr
+
+tag altTitle
+altT
+
+tag altStronger
+as
+
+tag altWeaker
+aw
+
+tag altRaiseMSS
+am
+
+tag altTest rate rtt
+ar
+
+tag altMSSTest rate rtt mss
+amt
+
+tag testerTitle status
+testerT
+
+tag testerBottleneck
+tb
+
+tag testerBottleneckNIC
+tbn
+
+tag testerInsufficientUnknown
+tiu
+
+tag testerMBZ varname value
+tmbz
+
+tag testerFractionalWindow obswin mss
+tfw
+
+tag testerBurstFailed
+tbf
+
+tag testerInconsistent reason message
+ti
+
+tag testerUnknownFix filename
+tuf
+
+tag testerUndiagnosed
+tu
+
+tag testerPass
+tp
+
+tag testerVersion version phase
+tv
+
+tag testerWeb100zeroRwin
+twzr
+
+tag GenericFail message
+gf
+
+tag GenericIncomplete
+gi
+
+tag GenericFix
+fg
+
+tag GenericProvisional
+gp

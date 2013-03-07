@@ -1,0 +1,31 @@
+Release notes
+
+==== Changes since 1.5.5 (Feb 2, 2009):
+	The java applet now limits FQDN's to 30 chars
+	    and accepts DefaultRTT and DefaultRate parameter from the .html
+	Improved DiagServer stats for remote monitoring
+	Worked around an open FD that delayed server restarts
+	Enabled threading in DiagServer.py and changed logic
+	    around WWW_SERVER to permit pS to use WWW_DIR
+	Updated config.py with parameters for DefaultRTT, DefaultRate,
+	    threads, and relative position ("in").
+	Added a "PROBLEMS" section to the INSTALL instructions
+
+==== Changes since 1.5.4 (Sept 2008):
+	Added RELEASENOTES
+	Place all reports and data in "/Reports-yyyy-mm/" directories.
+	Update mkdatasummary.py to restructure legacy data
+	Added hostnames to the reports
+	Many robustness tweaks to DiagServer
+
+Note that when upgrading to 1.5.5 or later from 1.5.4 or earlier, all existing
+pathdiag reports in the server directory (/ServerData/ in the default config)
+will be moved to subdirectories using the new naming convention
+(/ServerData/Reports-yyyy-mm/).  This will break all bookmarked URLs to past
+reports.  Given an old URL, it can be corrected by either inserting
+"Reports-yyyy-mm/" (for current months) or replacing "OldReports" by "Reports"
+(for past reports).  Version 1.5.4 and earlier renamed reports into
+subdirectories once they were more than two months old.  The under the new
+convention, reports URLs will be stable as long as they remain on the server.
+
+==== There are no release notes for prior versions.

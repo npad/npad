@@ -1,0 +1,83 @@
+TODO list for pathdiag
+
+Pick stepsize from RTT
+Reverse loss measurement and queue measurment
+fix rwnd logic to generate a warning if actual window is too small
+
+HISTORICAL TODO LIST
+
+The short list
+  Do something about testerMBZ X_OtherReductionsCV
+  Put in general gate_ scan_ markers in the autoscan
+  Add tester limits to diagserver and config (--maxtime and/or --maxwindow)
+  make "can't measure queue size" more generic
+  hide or make warning all tester validations
+
+Pathtools library and other low level features
+  When failing to set cwnd controls
+     return to python and check for BIC before punting
+  better message for obsolete kernel DONE
+  Support for setting section MTU down to end-to-end MTU  WAITING for kernel
+    Better MTU messages 
+  Future automatic (self scaling) coarse scan
+    Parameters to bound queue size
+    User mode "Limited slowstart" implementation
+  Future power maximizing controller
+
+Pathdiag data collection (autoscan etc)
+  Accept floats for rtt and datarate
+  Add mechanism to save "events" between test and report generation  DONE
+  Easy end-to-end coarse scan test (option) 
+    Yield parameters for section-by-section testing
+  General support for known queue size limits in the path
+  Rethink total run duration and watchdog limits DONE
+
+Pathdiag report generation
+  Unified sub-test display messages and logic INPROGRESS
+  Distinguish between host config and running problems 
+  Diagnose: can't overflow queue due to TCP problems (can't raise cwnd)
+  Diagnose Timeouts: window too small v abrupt v CC problems
+  Make loss rate message clearly one way (no report on return loss)
+  handle X_OtherReductionsCV correctly
+  handle CongestionOverCount correctly
+
+Diagnnostic server/test environment:
+  Option to have the diagnostic client set socket buffer size
+    Emulate application (manual) buffer tuning  (-A switch)
+    0:default -1:system max n:set to size
+    tool set/procedure to validate perftune directions
+  Server options for longer duration, smaller steps (and MTU) (+ add in clients)
+
+  Tools to better collect, inspect and manage results from many servers
+    Save file names to a shared log file NIX
+    Tools to detect additional servers from weblogs
+    Tool to review and select "regression" cases from saved results
+  Collection of regression tests for pretesting new releases
+
+Other documentation
+  URGENT: real MS-XP instructions on the tcp tuning guide DONE
+  Update solaris on tcptune (per heffner) DONE
+  Correct FreeBSD per petka DONE
+
+NEW ITEMS (unclassified&unprioritized)
+Do not advise tests > 100Mb/s if forbidden by server NIX
+autologfile name
+automatically link help.html and boxes.css
+Where to discuss application specific syn negotiation failures
+Documentation clearer about required interface rates
+INSTALL doc warn not to upgrade w/o restarting (or find the bug)
+
+==
+Following "long path" version
+ETF limits problem go to a DBP limit?
+    - make this a config parameter?
+server tuning directions relative to the DBP limit?
+phase info (and other per test meta data) into logfile
+make replay long paths work DONE
+make cvs version say so on web page
+Need a way to capture stdout and stderr
+Need to address the sendtuning during slowstart problem
+Verify proper queusize rescan logic: is quench being rest?  Add nonconv test
+
+Spurious tester bottleneck message?  See:
+http://kirana.psc.edu/NPAD/ServerData/PSC-MATHIS.WV.CC.cmu.edu:2006-04-17-16:56:43.html 

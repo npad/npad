@@ -1,0 +1,162 @@
+Install instructions for the NPAD pathdiag server
+Version 1.5.6.
+
+Prerequisites:
+1. A fairly fast, preferably Gigabit-attached *Linux* server.
+2. A working development environment including a C compiler and a
+   recent version of Python.
+3. If you want plots of the test data (strongly recommended), you need to
+   install gnuplot and the python-gnuplot library.
+   (e.g.: apt-get install gnuplot python-gnuplot )
+4. Web100 must be installed and properly tuned.
+   - The Web100 kernel patch version must be 2.5.5 or later (Linux 2.6.13 or later).
+   - The Web100 userland must be 1.5 or later.
+   - BIC and other experimental congestion control must be off
+     (echo reno > /proc/sys/net/ipv4/tcp_congestion_control).
+   - Sufficient TCP buffer space for the largest pipe you want to test
+     (see http://www.psc.edu/networking/projects/tcptune/).
+
+If things go wrong, see "PROBLEMS" below.
+
+0. To tell if Web100 has been properly set up, run this script:
+
+  python -c "import Web100; Web100.Web100Agent(); print('Success.')"
+
+If this does not print "Success." then the NPAD tools WILL NOT WORK.
+You must get Web100 set up correctly first.
+
+Much of these instructions can be cut and pasted into a bash shell.
+
+The current source setup is as follows:
+
+	npad-1.5.6/		  - Configuration and common resources
+	napd-1.5.6/pathdiag/    - The pathdiag tool
+	npad-1.5.6/diag_server/ - The diagnostic client/server framework
+
+1. Pick a location to manage the sources.  This will be the parent of the
+   build dir, such that future release will just "drop in".
+       	SRC=/usr/src
+	cd $SRC
+
+2. Unpack the source:
+	tar xzvf npad-1.5.6.tar.gz
+	cd npad-1.5.6
+
+3. Copy over your old config
+   NB: When upgrading from an older version, check RELEASENOTES.txt for
+      specific information about any compatibility issues.
+
+   A. If you have a previously set up installation (or if you are upgrading
+      from a previous version), you may want to copy your custom
+      configuration.  Copy config.xml from the previously installed location
+      (by default, this will be in $SRC/npad-dist//), or from the
+       previous source tree, to your current build directory.
+   
+   B. If you have a site-customized server form (e.g. a modified
+      template_diag_form.html), copy this file to your current build
+      directory, though if you are upgrading, be sure to check for
+      changes in our most recent template_diag_form.html you may want to
+      merge.
+      
+      If you do not have a customized form, you can create one by editing
+      template_diag_form.html in place.  Certain critical sections are
+      included with %%keyword%% directives processed by the config script.
+      You should keep all of these in place somewhere within the file,
+      probably in their default order.  Most customizations should be to
+      the "look and feel" of the page.
+      
+      The form should work as-is for most installations.
+   
+4. Run the config script
+       	./config.py
+   
+   You will be prompted with on-line help for each config option.  If you
+   have already run config.py and would like to change your configuration,
+   run ./config.py -p.
+
+5. Build:
+       	make
+
+   You can confirm that the libraries are correctly installed and searched
+   by displaying the help:
+
+       ./pathdiag/pathdiag.py --help
+
+   If this does not display pathdiag help the NPAD tools WILL NOT WORK.
+   See PROBLEMS #5 below.
+
+6. Install:
+        make install
+   
+   Depending on the permissions for your installation directories, you may
+   need to become root before running make install.
+
+   Note that the server will not run in the source area, you must do an
+   install to properly assemble all of the components.   You can run the
+   server as yourself (it does not require root) if appropriately configured.
+
+7. Start the server by hand.  This can be done by running DiagServer.py
+   in your chosen installation directory. By default:
+   
+        $SRC/npad-dist/DiagServer.py
+
+9. Run tests.
+   Run a web browser on a machine that you want to test, and browse to
+   the NPAD welcome page.  Scroll down to the "The Test Form" section.
+   It should have 2 field-s labeled "Target RTT" and "Target rate".
+   Fill in the fields and click "Start test".  A log window will
+   appear showing some log messages while the test runs.  When it
+   completes, another browser window will appear showing the test
+   results.  The results are saved in an HTML file on the server.
+
+   Hint: if something goes wrong with the tester, it is easier to use the
+   command line client to capture output for debugging. 
+
+11. Set up the server to start at boot time.
+    There is a Sys V init script provided ('npad' in your build directory).
+    On Sys V systems (most Linux distributions), you should be able to copy
+    this to /etc/init.d/npad, and start the service with:
+   
+        /etc/init.d/npad start
+   
+    and set it up to automatically start/stop with your distribution's
+    init script management tools.
+   
+    If this script does not work with your Linux distribution, you will
+    need to determine the best way to start and stop the service, perhaps
+    by creating your init script.
+
+12. Please drop us a note at nettune@psc.edu, so we know that the server is up
+    and running.
+
+PROBLEMS
+
+Problems on step 0:
+
+Problems on step 5:
+   If pathdiag -help does not generate a usage message, it is failing to find
+   all of the necessary libraries.   This probably means that the system
+   dynamic loader is not searching the default locations for user added
+   libraries, such as web100.   The easiest fix is to add the following to your
+   login rc file (e.g. to .bashrc): 
+
+   export LD_LIBRARY_PATH=/usr/local/lib
+
+Problems on step 9:
+   If the web applet showed no useful output (but -help worked) then try
+   running the "c" command line version.
+
+   In either case if output includes messages something like:
+   Web100 setup error a 'web100_group *' is expected,
+                'PySwigObject(xxxxxxx)' is received C/C++ variable 'gread'
+
+   Then the precompiled swig output included with the pathdiag sources is
+   incompatible with the python run time on your system.   There are 2 possible
+   solutions:
+
+   - Edit napd-1.5.6/pathdiag/Makefile to select a different SAVESWIG version,
+     and start over with step 5.
+
+   - Manually install swig on your system, then  "make clean; make makeswig"
+     in napd-1.5.6/pathdiag/Makefile, and start over with step 5.
+

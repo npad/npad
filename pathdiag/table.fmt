@@ -1,0 +1,315 @@
+###############################################################
+# This section is nearly pure .html
+# it logically belongs in a different file, keyed on output type
+# e.g. html vs text
+
+fmt beginpage
+<td valign=top>
+
+################
+fmt openbox
+<br>
+
+################
+fmt closebox
+<!-- closebox -->
+
+################
+fmt title
+<!-- title -->
+
+################
+fmt section
+<!-- section -->
+
+################ misc info
+fmt info
+[message]
+
+################
+fmt pass
+<span><font color="#00AA00">
+[message]
+</font></span>
+
+################
+fmt warning
+<span><font color="#FFC000">
+[message]
+</font></span>
+
+################
+fmt fail
+<span><font color="#FF0000">
+[message]
+</font></span>
+
+################
+fmt action
+<!-- action -->
+
+################
+fmt endpage
+</a>
+</td>
+
+################################################################
+# this section is (nearly) pure text
+tag docTitle
+
+################################ Test information
+tag testTitle
+
+tag testTester hostname address
+
+tag testTarget hostname address
+
+tag testLogbase filename
+<a href="./[filename].html">
+
+tag testWhen timestamp
+When: [timestamp]
+
+tag testMSS mss
+MSS: [mss] bytes
+
+tag testTargetRate rate
+[rate]&nbsp;Mb/s&nbsp;*
+
+tag testTargetRTT rtt
+[rtt]&nbsp;ms
+
+tag testTargetMSS mss
+MSS: [mss] bytes
+
+tag testReRate rate
+Rerun: [rate] Mb/s
+
+tag testReRTT rtt
+Rerun: [rtt] ms
+
+tag testPath mss rtt
+<br>Section: [mss] B / [rtt] ms
+
+tag testRTTwarn segrtt rtt
+testRTTwarn
+
+tag testPlotHere filename
+
+################################ Peer TCP configuration
+tag peerTitle status
+
+tag peerNoSACK
+No SACK
+
+tag peerNoTS
+No TS
+
+tag peerNoWS need
+No WSCALE
+
+tag peerSmallWS wscale need
+WS: [wsrcvd]/[wscale].
+
+tag peerPassSYN
+WS:[wscale]
+
+# Rwin checks
+tag peerMaxRwin val
+MaxRwin [val]k
+
+tag peerMaxRwinOK val
+MaxRwin [val]k (OK)
+
+tag peerCloseRwin
+peerCloseRwin
+
+tag peerTriageRwin
+peerTriageRwin
+
+tag peerDiagnosis
+
+tag peerFix
+
+tag peerWarn
+
+tag peerPass
+
+################################ Data rate checks
+tag rateTitle status
+
+tag rateMeasured rate
+Fail: [rate] Mb/s.
+
+tag rateTarget rate
+
+tag rateLoss
+rateLoss
+
+tag rateClamp
+rateClamp
+
+tag rateOverhead
+rateOverhead
+
+tag rateRoute
+rateRoute
+
+tag ratePass rate
+Pass: [rate] Mb/s
+
+################################ Loss rate checks
+tag lossTitle status
+
+tag lossInsufficient0 have need
+lossInsufficient0
+
+tag lossInsufficient
+lossInsufficient
+
+tag lossInsufficientRate
+lossInsufficientRate
+
+tag lossInsufficientRateFix
+
+tag lossFail percent runlen
+Fail: [percent]% [runlen]
+
+tag lossDiagnosis
+
+tag lossDetails count percent
+
+tag lossAction
+
+tag lossPass percent runlen
+Pass: [percent]% [runlen]
+
+tag lossPass0 percent runlen
+Pass: 0% [runlen]
+
+tag lossBudget rate mss rtt percent runlen
+
+################################
+tag duplexTitle
+
+tag duplexCheck
+Pass: duplex
+
+tag duplexDiagnosis
+Fail: duplex
+
+tag duplexFix
+
+################################ Static queue size
+tag staticTitle status
+
+tag staticConditions
+staticConditions
+
+tag staticInsufficient
+staticInsufficient
+
+tag staticMeasured packets bytes
+Pkts: [packets]
+
+tag staticEstimated packets bytes
+Est pkts: [packets] 
+
+tag staticQueueTime time
+
+tag staticNegative
+
+tag staticTooFast
+too fast
+
+tag staticDiagnosis
+
+tag staticPass
+Pass
+
+tag staticInfo rate rtt bytes
+
+tag staticFix maxjitter
+
+################################ Path summary
+tag pathTitle
+
+tag pathLength
+pathLength
+
+tag pathChoose
+
+tag pathFix
+
+tag pathPass
+
+tag pathAborted
+pathAborted
+
+tag pathWindow rate ttl
+pathWindow
+
+tag pathReduce size
+
+################################ Alternate path tests
+tag altTitle
+
+tag altStronger
+
+tag altWeaker
+
+tag altRaiseMSS
+
+tag altTest rate rtt
+
+tag altMSSTest rate rtt mss
+
+################################ Check the tester itself
+tag testerTitle status
+
+tag testerBottleneck
+testerBottleneck
+
+tag testerBottleneckNIC
+testerBottleneckNIC
+
+tag testerInsufficientUnknown
+testerShort 
+
+tag testerMBZ varname value
+testerMBZ [varname] [value]
+
+tag testerFractionalWindow obswin mss
+testerFractionalWindow [obswin] [mss]
+
+tag testerBurstFailed
+testerBurstFailed
+
+tag testerInconsistent reason message
+testerInconsistent [reason]
+[message]
+
+tag testerUnknownFix filename
+testerUnknownFix
+
+tag testerUndiagnosed
+testerUndiagnosed
+
+tag testerPass
+Pass
+
+tag testerVersion version phase
+
+tag testerWeb100zeroRwin
+testerWeb100zeroRwin
+
+################################ misc formats
+tag GenericFail message
+GenericFail
+
+tag GenericIncomplete
+Incomplete test
+
+tag GenericFix
+
+tag GenericProvisional

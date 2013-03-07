@@ -1,0 +1,70 @@
+##
+## windows nmake file, do:  nmake /f Makefile.win
+##
+
+INCLUDE=\local\include;..\..\include;..\..\decomp;c:\program files\microsoft visual studio .net\vc7\include;c:\program files\microsoft visual studio .net\vc7\platformsdk\include;c:\program files\microsoft visual studio .net\vc7\atlmfc\include
+LIB=\local\lib;$(LIB);c:\program files\microsoft visual studio .net\vc7\platformsdk\lib;c:\program files\microsoft visual studio .net\vc7\lib;c:\program files\microsoft visual studio .net\vc7\atlmfc\lib
+
+
+CPP=cl.exe
+CPP_PROJ=/nologo /Ox /MT /c /W1 /GX /Zm200 /DWINDOWS /D_WIN32 
+
+ALL : "vb.exe"
+
+
+CLEAN :
+ -@erase "*.obj"
+ -@erase "*.pdb"
+ -@erase "*.exe"
+ -@erase "*.ilk"
+
+
+ 
+LINK32=link.exe
+
+
+             
+LINK32_FLAGS=glut32.lib   glu32.lib    opengl32.lib \
+             kernel32.lib user32.lib   gdi32.lib    \
+             winspool.lib comdlg32.lib advapi32.lib \
+             shell32.lib  ole32.lib    libcmt.lib   \
+             oleaut32.lib uuid.lib   mscoree.lib  \
+             odbc32.lib   odbccp32.lib wsock32.lib  \
+             /nologo          /subsystem:console    \
+             /machine:I386                          \
+             /out:"trafficrcv.exe"    /nodefaultlib:libcmt /nodefaultlib:libcd
+             
+             
+
+LINK32_OBJS=  "trafficrcv-win.obj"
+
+#####################################################
+# This is linking the object file into an executable#
+#####################################################
+
+"vb.exe" : $(LINK32_OBJS)
+    $(LINK32) @<<
+  $(LINK32_FLAGS) $(LINK32_OBJS)
+<<
+
+
+#########################################################
+##                compilation rules                    ##
+#########################################################
+
+.c.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cpp.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+.cxx.obj::
+   $(CPP) @<<
+   $(CPP_PROJ) $< 
+<<
+
+# end of file

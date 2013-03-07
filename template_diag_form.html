@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+  <title>NPAD Diagnostics at %%site%% (%%location%%)</title>
+  <style type="text/css">
+    body { font-size: 10pt; font-family: "Arial, Helvetica, sans-serif"; }
+    table { font-size: 10pt; font-family: "Arial, Helvetica, sans-serif"; border: 0px; table-layout: fixed;}
+    h2 { font-size: 12pt; font-weight: bold; }
+    h3 { font-size: 11pt; font-weight: bold; font-style: italic; }
+  </style>
+</head>
+
+<body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0">
+  <table border="0" width="100%" bgcolor="#660000" cellpadding="5" cellspacing="0">
+    <col width="5%"><col width="45%"><col width="45%"><col width="5%">
+    <tr>
+      <td>&nbsp;</td>
+      <td><font color="#ffcc00">
+        <font size="+3">NPAD</font><br>
+        <font size="+1">One-click network diagnostics</font>
+      </font></td>
+      <td align="right"><font color="#ffffff">
+        <font size="+1">
+        Server located at %%site%% in %%location%%
+        </font>
+      </font></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <font color="#ffffff">
+        <a href="http://www.psc.edu/networking/projects/pathdiag/"><font color="#ffffff">Documentation</font></a> |
+        <a href="%%logdir%%/summary.html"><font color="#ffffff">Results Summary</font></a> |
+        <a href="#about"><font color="#ffffff">About NPAD</font></a>
+        </font>
+      </td>
+      <td>&nbsp;</td>
+    </tr>
+    </font>
+  </table>
+
+  <center>
+  <table width="90%" bgcolor="#ffffff" cellpadding="0" cellspacing="0"><tr><td>
+  <table width="600" bgcolor="#ffffff" cellpadding="5" cellspacing="0">
+    <tr>
+      <td>
+        <p>NPAD (Network Path and Application Diagnosis) is designed
+        to diagnose network performance problems in your end-system
+        (the machine your browser is running on) or the network between it and
+        your nearest NPAD server.  For each
+        diagnosed problem, the server prescribes corrective actions
+        with instructions suitable for non-experts.</p>
+
+        <h2>Brief instructions</h2>
+        %%above_applet%%
+
+	<p>Note that tests take 2-5 minutes, depending on the parameters that
+	you provide and the network path.
+	If there is a queue, waiting times might be long.</p>
+
+        <table width="610" bgcolor="#660000">
+          <tr><td align="center">
+          %%tester_applet%%
+        </td></tr></table>
+
+        %%site_contact%%
+
+        <h2><a name="program">Command line client</a></h2>
+        %%c_client%%
+
+        <h2><a name="about">About NPAD</h2>
+        %%about_npad%%
+      </td>
+    </tr>
+  </table>
+  </td></tr></table>
+  </center>
+
+</body>
+</html>

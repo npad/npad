@@ -1,0 +1,60 @@
+# Note: this software does not run on a Mac, except reprocessing data collected
+# on some other Linux system.   Since Web100 has not been ported to a Mac, the
+# measurement portions of the software can not run on a Mac without first doing a full
+# Web100 port.
+
+TARGETS    = _pathlib.so help.html
+SWIG       = swig
+PYINCLUDE  = -I`python -c 'import sys; print("%s/include/python%s"%(sys.prefix, sys.version[:3]))'`
+PICFLAG    = -fPIC
+DYNLINK    = ld -dylib -t
+WEB100     = /usr/local/
+EXEC_FILES = pathdiag.py* pathtools.py* prettyhtml.py* pathlib.py* _pathlib.so mkdatasummary default.fmt table.fmt
+LOGDIR_FILES = boxes.css help.html
+
+all:  $(TARGETS)
+
+# the help file
+help.html: prettyhtml.py default.fmt
+	./prettyhtml.py
+
+# The C part of the diagnostic
+pathlib.o: pathlib.c pathlib.h
+	$(CC) -g -c pathlib.c -o pathlib.o
+
+# SWIG stuff - break this apart so we can ship intermediate files
+# for swig free instalation
+SAVESWIG=swigout
+SWIGOUT=pathlib.py pathlib_wrap.c
+saveswig: $(SWIGOUT)
+	echo DO NOT SAVE MAC SWIG
+	false
+
+noswig:
+	rm -f $(SWIGOUT)
+	cp $(SAVESWIG)/pathlib.py .
+	cp $(SAVESWIG)/pathlib_wrap.c .
+
+# beware: make recursion 
+pathlib.py pathlib_wrap.c: pathlib.i pathlib.h
+	make noswig
+
+_pathlib.so: pathlib_wrap.c pathlib.o
+	$(CC) -g $(PYINCLUDE) -I$(WEB100)/include -c $(PICFLAG) pathlib_wrap.c
+#	$(DYNLINK) -o _pathlib.so pathlib_wrap.o pathlib.o -rpath $(WEB100)/lib -L$(WEB100)/lib -lweb100
+	gcc -bundle -flat_namespace -undefined suppress -o _pathlib.so pathlib.o pathlib_wrap.o -lc
+
+clean:
+	rm -f *.o *.so *.pyc pathlib.py temp* *_wrap.c $(TARGETS)
+
+-include ../Makefile.config
+
+install:
+	@if [ -z "$(EXEC_DIR)" ]; then \
+		echo "You need to run the config script before installing."; \
+		echo "See the INSTALL document in the distribution for more information."; \
+		exit 1; \
+	fi
+	cp $(EXEC_FILES) $(EXEC_DIR)
+	cp $(LOGDIR_FILES) $(WWW_DIR)/$(LOGDIR)
+

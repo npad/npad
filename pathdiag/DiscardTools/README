@@ -1,0 +1,5 @@
+Pathdiag discard tools
+
+These are useful for stand-alone (non-web-server) uses of pathdiag.
+
+They are not used in the web server based release.
