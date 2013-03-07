@@ -223,6 +223,14 @@ This <a href="[pathdiag]#section">path section</a> has the indicated minimum RTT
 as reported by TCP itself.
 
 # ----------------
+tag testTOS tos
+The TOS byte was set to [tos]. [help]
+
+helptag testTOS
+The full 8 bit TOS byte was set to [tos], unless the indicated value is negative, in which case
+there was a problem.
+
+# ----------------
 tag testRTTwarn segrtt rtt
 Warning: The section RTT is greater than the requested target RTT ([segrtt] &gt; [rtt]) [help]
 

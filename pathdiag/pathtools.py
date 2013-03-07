@@ -1,6 +1,7 @@
 import sys
 import time
 import socket
+import struct
 from types import LongType, FloatType
 import libweb100
 import Web100 as PyWeb100
@@ -139,6 +140,9 @@ def setupParse(p):
     p.add_option("-U", "--mss",
 	help="Set MSS (down only)",
 	type="int", default=0, dest="set_mss")
+    p.add_option("", "--tos",
+        help="Set the TOS byte (8 bits)",
+        type="int", default=-1, dest="set_tos")  # NB: -2 means error
 
     # server only stuff
     p.add_option("", "--queclient",
@@ -159,7 +163,7 @@ def queClient(opts):
 	sys.stdout.flush()
 
 timelimit=0
-def setupTCP(opts):
+def setupTCP(ev, opts):
     """
     Setup the TCP connection for a test.
     """
@@ -293,6 +297,25 @@ def setupTCP(opts):
         # note: pid_t has no distructor, so this is technically a leak.
         # therfore we need -DSWIG_PYTHON_SILENT_MEMLEAK to silence the rt complaint
 
+    # try to set the TOS byte (note this includes 6 bits DSCP + 2 bits ECN)
+    # 0x20 is the correct value for scavanger/LBE service
+    if opts.set_tos >= 0:
+        i = -2
+        runlog("W", "Setting TOS to 0x%x"%(opts.set_tos))
+        try:
+            datasock.setsockopt(socket.IPPROTO_IP, socket.IP_TOS, opts.set_tos)
+        except Exception, e:
+            runlog("W", "Set TOS failed: %s"%(e))
+        else:
+            try:
+                i=struct.unpack("b", datasock.getsockopt(socket.IPPROTO_IP, socket.IP_TOS, 1))[0]
+                if i != opts.set_tos:
+                    runlog("W", "getsockopt reports incorrect TOS=0x%x (should be 0x%x)"%(i, opts.set_tos))
+            except Exception, e:
+                runlog("W", "Get TOS failed: %s"%(e))
+        ev["set_tos"] = i # Make the report summarize the status, -2 means there were errors
+
+    # Set the MSS
     # we do no validity checking here - we rely on the kernel
     # Later checks will catch problems
     if opts.set_mss:

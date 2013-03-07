@@ -1,5 +1,5 @@
 Install instructions for the NPAD pathdiag server
-Version 1.5.6.
+Version %%ver%%.
 
 Prerequisites:
 1. A fairly fast, preferably Gigabit-attached *Linux* server.
@@ -29,9 +29,9 @@ Much of these instructions can be cut and pasted into a bash shell.
 
 The current source setup is as follows:
 
-	npad-1.5.6/		  - Configuration and common resources
-	napd-1.5.6/pathdiag/    - The pathdiag tool
-	npad-1.5.6/diag_server/ - The diagnostic client/server framework
+	npad-%%ver%%/		  - Configuration and common resources
+	napd-%%ver%%/pathdiag/    - The pathdiag tool
+	npad-%%ver%%/diag_server/ - The diagnostic client/server framework
 
 1. Pick a location to manage the sources.  This will be the parent of the
    build dir, such that future release will just "drop in".
@@ -39,8 +39,8 @@ The current source setup is as follows:
 	cd $SRC
 
 2. Unpack the source:
-	tar xzvf npad-1.5.6.tar.gz
-	cd npad-1.5.6
+	tar xzvf npad-%%ver%%.tar.gz
+	cd npad-%%ver%%
 
 3. Copy over your old config
    NB: When upgrading from an older version, check RELEASENOTES.txt for
@@ -154,9 +154,9 @@ Problems on step 9:
    incompatible with the python run time on your system.   There are 2 possible
    solutions:
 
-   - Edit napd-1.5.6/pathdiag/Makefile to select a different SAVESWIG version,
+   - Edit napd-%%ver%%/pathdiag/Makefile to select a different SAVESWIG version,
      and start over with step 5.
 
    - Manually install swig on your system, then  "make clean; make makeswig"
-     in napd-1.5.6/pathdiag/Makefile, and start over with step 5.
+     in napd-%%ver%%/pathdiag/Makefile, and start over with step 5.
 

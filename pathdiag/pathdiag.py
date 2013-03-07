@@ -23,7 +23,7 @@ except ImportError:
 from types import *
 from pathlib import *
 
-version="$Id: pathdiag.py,v 1.46 2009/02/06 00:07:04 mathis Exp $"
+version="$Id: pathdiag.py,v 1.47 2009/06/10 21:19:57 mathis Exp $"
 
 ################################################################
 # Various useful math
@@ -537,6 +537,10 @@ def dd_user(ev, res):
 
     # Display the section MSS and RTT
     ph.boxmessage(infobox, "info testPath mss=%d rtt=%6f"%(s["CurMSS"], ev["min_rtt"] ))
+
+    # Display the TOS if it was set
+    if "set_tos" in ev:
+        ph.boxmessage(infobox, "info testTOS tos=%d"%(ev["set_tos"]))
 
     # open 3 main boxes
     dd_openpeerbox(ev, res[1],  125.0 * ev["target_rate"] * ev["target_rtt"])
@@ -1868,7 +1872,7 @@ def main():
 	dd_showhead()
 
     di_resetloss(gev)
-    pp.setupTCP(options)
+    pp.setupTCP(gev, options)
     # get minimal information about the section
     result = prescan(options, gev)
     if options.foreverf:

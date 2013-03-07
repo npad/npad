@@ -52,6 +52,9 @@ trt
 tag testPath mss rtt
 tp
 
+tag testTOS tos
+tos
+
 tag testRTTwarn segrtt rtt
 tw
 

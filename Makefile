@@ -4,6 +4,9 @@ RECURSIVE_TARGETS = all-recursive clean-recursive install-recursive
 all: all-recursive
 
 clean: clean-recursive
+	# ./config.py droppings
+	rm -f Makefile.config  DiagServerConfig.py diag_form.html npad
+
 
 $(RECURSIVE_TARGETS):
 	@target=`echo $@ | sed s/-recursive//`; \
@@ -67,4 +70,4 @@ install: all
 	rm -f $(EXEC_DIR)/config.xml $(EXEC_DIR)/template_diag_form.html
 	cp config.xml template_diag_form.html $(EXEC_DIR)/
 	@$(MAKE) install-recursive
-	sudo chown -R $(USER).$(GROUP) "$(LOGDIR)"
+	sudo chown -R $(USER).$(GROUP) "$(LOGDIR)"   # MLab specific

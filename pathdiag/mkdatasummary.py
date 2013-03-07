@@ -16,18 +16,18 @@ def main():
 	for dir in glob.glob("OldReports*/"):
 		os.rename(dir, dir[3:])
 		
-	# Fix legacy files
-	for report in glob.glob("*smry.html"):
-		prefix = report[:report.index("smry.html")]
-		month = (report[report.index(":")+1:])[:7]
-		dirname = "Reports-%s"%month
-		try:
-			os.mkdir(dirname)
-		except OSError, e:
-			if e[0] != 17:
-				raise e
-		for filename in (glob.glob("%s*"%prefix)):
-			os.rename(filename, "%s/%s"%(dirname, filename))
+#	# Fix legacy files without per month dirs
+#	for report in glob.glob("*smry.html"):
+#		prefix = report[:report.index("smry.html")]
+#		month = (report[report.index(":")+1:])[:7]
+#		dirname = "Reports-%s"%month
+#		try:
+#			os.mkdir(dirname)
+#		except OSError, e:
+#			if e[0] != 17:
+#				raise e
+#		for filename in (glob.glob("%s*"%prefix)):
+#			os.rename(filename, "%s/%s"%(dirname, filename))
 
 	# Add required help as needed, adjusting parent URLs
 	f = open("help.html")
@@ -71,7 +71,9 @@ def main():
 	hosts = {}
 	for filename in filenames:
 		hostname = filename[filename.index("/")+1:]
-		hostname = hostname[:hostname.index(":")]
+		hostname = hostname[:hostname.index("-")]
+		if hostname[-5:] == ":2012":		# new filename syntax version shim
+			hostname = hostname[:-5]
 		try:
 			hosts[hostname]
 		except:

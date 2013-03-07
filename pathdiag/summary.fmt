@@ -87,6 +87,8 @@ tag testReRTT rtt
 
 tag testPath mss rtt
 
+tag testTOS tos
+
 tag testRTTwarn segrtt rtt
 
 tag testPlotHere filename

@@ -175,7 +175,7 @@ int stune_conn(web100_connection *conn, int swindow) {
   if (!vSndbufTune) WC_QUITZ( (vSndbufTune=web100_var_find(gtune, "X_Sndbuf") ),"X_Sndbuf tune - Not found" );
   if (!vLimCwndRead) WC_QUITZ( (vLimCwndRead=web100_var_find(gread, "LimCwnd") ),"LimCwnd - Not found" );
 
-  WC_QUITNEG(web100_raw_write(vLimCwndTune, conn, &swindow       ),"LimCwnd Set");
+  WC_QUITNEG(web100_raw_write(vLimCwndTune, conn, &swindow       ),"Web100 failed to write LimCwnd");
   // only set the socket buffer up
   if (bufsz>maxbuf) {
       maxbuf=bufsz;

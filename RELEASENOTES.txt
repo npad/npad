@@ -1,5 +1,14 @@
 Release notes
 
+==== Changes since 1.5.6 (May 6, 2009):
+	Clarified the message when writing to web100 (LimCwnd) fails
+	Removed an MLab specific sudo from the makefile
+	Fixed make clean to remove some overlooked targets
+	Added generic server switch support to diag-client.c
+	Added generic pathdiag switch support to DiagServer.py
+	Added TOS support to pathdiag.
+	NB: the public release only supports scavenger service
+
 ==== Changes since 1.5.5 (Feb 2, 2009):
 	The java applet now limits FQDN's to 30 chars
 	    and accepts DefaultRTT and DefaultRate parameter from the .html

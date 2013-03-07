@@ -15,7 +15,10 @@ def gen_buf(size=1024*1024):
 class TrafficSock:
 	def __init__(self, sock=None, buf=None):
 		if sock == None:
-			self.sock = socket.socket()
+			try:
+				self.sock = socket.socket(socket.AF_INET6)
+			except:
+				self.sock = socket.socket(socket.AF_INET)
 		else:
 			self.sock = sock
 		if buf == None:

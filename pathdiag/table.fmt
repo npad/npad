@@ -91,6 +91,9 @@ Rerun: [rtt] ms
 tag testPath mss rtt
 <br>Section: [mss] B / [rtt] ms
 
+tag testTOS tos
+testTOS [tos]
+
 tag testRTTwarn segrtt rtt
 testRTTwarn
 

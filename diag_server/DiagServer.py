@@ -13,6 +13,8 @@ import threading
 import time
 import optparse
 import pwd
+import re
+import traceback
 from BaseHTTPServer import HTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 
@@ -53,16 +55,17 @@ test_portrange_current = TEST_PORTRANGE_MAX
 def testrange_bind(sock, name):
 	global test_portrange_current
 	done = False
-	p = test_portrange_current
+	starting_port = test_portrange_current
 	while not done:
-		test_portrange_current = ((test_portrange_current - TEST_PORTRANGE_MIN + 1) % \
-						(TEST_PORTRANGE_MAX - TEST_PORTRANGE_MIN)) + \
-						TEST_PORTRANGE_MIN
+		test_portrange_current = test_portrange_current+1
+		if test_portrange_current > TEST_PORTRANGE_MAX:
+			test_portrange_current = TEST_PORTRANGE_MIN
 		try:
 			sock.bind((name, test_portrange_current))
 			done = True
 		except Exception, e:
-			if p == test_portrange_current:
+			if starting_port == test_portrange_current:
+				print_exc() # XXX debugging (fatal anyhow)
 				raise e
 	print("Bound port: %d"%test_portrange_current);
 
@@ -94,6 +97,11 @@ class DiagStats():
 global stats
 stats=DiagStats()
 
+# list of regular expressions to match extra_args that may be passed from the client to pathdiag
+validargs = [
+	"--tos=0x20", # scavenger service, safe for public use
+#	"--tos=[x0-9A-Fa-f]*$"	# generic tos, not safe on all networks  XXX
+	]
 
 class DiagRequestHandler(SocketServer.StreamRequestHandler):
 	# For the watchdog
@@ -169,7 +177,7 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 			try:
 				testrange_bind(ts.sock, self.request.getsockname()[0])
 				ts.sock.listen(1)
-				self.wfile.write("listen %s %d\n"%ts.sock.getsockname())
+				self.wfile.write("listen %s %d\n"%(ts.sock.getsockname()[0:2]))
 			except Exception, e:
 				self.wfile.write("warn While binding socket, got error: %s\n"%e)
 				raise e
@@ -192,10 +200,10 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 	
 	
 	# Handle the test_pathdiag command
-	def do_pathdiag(self, cmd):
+	def do_pathdiag(self, cmd, xargs=[]):
 		now =  time.gmtime()
 		dir = time.strftime("/Reports-%Y-%m", now)
-		relative = "/%s:%s"%(socket.getfqdn(self.request.getpeername()[0]), \
+		relative = "/%s-%s"%(self.request.getpeername()[0], \
 		                          time.strftime("%Y-%m-%d-%H:%M:%S", now))
 		try:
 			os.mkdir(LOGBASE_FILE + dir)
@@ -252,7 +260,7 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 
 					# listen and tell the client
 					ts.sock.listen(1)
-					self.wfile.write("listen %s %d\n"%ts.sock.getsockname())
+					self.wfile.write("listen %s %d\n"%(ts.sock.getsockname()[0:2]))
 					ts.passive_open(self.client_address[0])
 
 					# don't hold the listen FD in case we are going to be restarted
@@ -260,6 +268,7 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 					os.close(3) # XXXX - I can't find the FD in a good way
 					
 					args = [ PATHDIAG_PATH, str(rtt), str(rate) ]
+					args[1:1] = xargs
 					args[1:1] = ["-F%d"%ts.sock.fileno(), "-x", \
 						"-l%s"%log_file, "--plot=yes", "--maxtime=%d"%WATCHDOG_TIME ]
 					
@@ -270,8 +279,8 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 						env['PYTHONPATH'] = WC_PATH
 					os.execve(args[0], args, env)
 				except Exception, e:
-					logf.write("child error %s\n"%str(e))
-					self.wfile.write("child error %s\n"%str(e))
+					logf.write("child error %s\n%s\n"%(str(e),traceback.format_exc()))
+					self.wfile.write("child error %s\n%s\n"%(str(e),traceback.format_exc()))
 					os._exit(1)
 				# child ends here
 			os.close(w)
@@ -319,12 +328,12 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 		# Make the summary page
 		os.spawnl(os.P_WAIT, MKDATASUMMARY_PATH, "mkdatasummary.py", LOGBASE_FILE)
 	
-	
 	# Called by the socket server once the
 	# control connection is established.
 	# 
 	# We are running in our own thread here.
 	def handle(self):
+		xargs=[]
 		try:
 			stats.requests += 1
 			handshake = False
@@ -342,8 +351,19 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 						cmd[0] == "test_sink":
 						self.do_source_sink(cmd)
 					elif cmd[0] == "test_pathdiag":
-						self.do_pathdiag(cmd)
+						self.do_pathdiag(cmd, xargs=xargs)
 						break  # XXX declare done to force the control connection to close
+					elif cmd[0] == "extra_args":
+						print ("Client requsted: %s"%line)
+						for a in  cmd[1:]:
+							for m in validargs:
+								if re.match(m, a):
+									xargs.append(a)
+									break
+							else:
+								self.wfile.write("extra_args FAILED\n")
+								raise ControlProtocolError("Unknown argument: %s"%a)
+						self.wfile.write("extra_args OK\n")
 					elif cmd[0] == "test_stats":
 						self.wfile.write("info stats: " + stats.show())
 						self.wfile.write("report none\n")
@@ -356,6 +376,11 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 
 class DiagServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 	allow_reuse_address = True
+	address_family = socket.AF_INET6
+	try:
+		socket.socket(address_family, socket.SOCK_STREAM, 0).close() # stupid
+	except:
+		address_family = socket.AF_INET
 	test_list = []
 	test_list_cv = threading.Condition()
 
@@ -433,7 +458,8 @@ def main():
 		thread.start_new_thread(web_serv, ())
 	
 	# Start the diag server
-	serv = DiagServer((CONTROL_ADDR, CONTROL_PORT), DiagRequestHandler)
+#	serv = DiagServer((CONTROL_ADDR, CONTROL_PORT), DiagRequestHandler)
+	serv = DiagServer(('', CONTROL_PORT), DiagRequestHandler) # XXX CONTROL_ADDR not used for dual protocols
 	thread.start_new_thread(watchdog, (serv,))
 	try:
 		serv.serve_forever()
