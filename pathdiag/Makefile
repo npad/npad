@@ -40,7 +40,7 @@ SAVESWIG=swigout
 
 SWIGOUT=pathlib.py pathlib_wrap.c
 makeswig:
-	$(SWIG) -python -I$(WC_PREFIX)/include pathlib.i
+	$(SWIG) -nomodern -python -I$(WC_PREFIX)/include pathlib.i
 
 saveswig: makeswig
 	mkdir -p $(SAVESWIG)
