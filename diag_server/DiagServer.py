@@ -341,6 +341,8 @@ class DiagRequestHandler(SocketServer.StreamRequestHandler):
 			while line != "":
 				cmd = line.split()
 				if len(cmd) < 1:
+					# line was all whitespace.
+					line = self.rfile.readline()
 					continue
 				
 				if not handshake:
